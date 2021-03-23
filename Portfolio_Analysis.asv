@@ -312,4 +312,4 @@ qqplot(FTSE_monthly_log_return);
 [H,p] = swtest(FTSE_monthly_log_return);
 [h,p] = kstest(FTSE_monthly_log_return);
 
-% The results of the different statistical tests show that the samples are not normally distributed.
+% The results of the different statistical tests show that the samples are normally distributed.
