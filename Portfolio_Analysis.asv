@@ -30,16 +30,16 @@ StockPrice = [table(Date),table(Price), table(monthly_dollar_return), table(mont
 
 %%   Index import
 
-DJI = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\data\^DJI.csv');
-FTSE = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\data\^FTSE.csv');
-DAX = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\data\^GDAXI.csv');
-HSX = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\data\^HSI.csv');
-Nikkei = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\data\^N225.csv');
-SP500 = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\data\^GSPC.csv');
+DJI = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\Lab\data\^DJI.csv');
+FTSE = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\Lab\data\^FTSE.csv');
+DAX = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\Lab\data\^GDAXI.csv');
+HSX = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\Lab\data\^HSI.csv');
+Nikkei = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\Lab\data\^N225.csv');
+SP500 = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\Lab\data\^GSPC.csv');
 
 %% Crypto import
 
-BTC = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\data\hist_data_btceur_2020.csv');
+BTC = readtable('C:\Users\Nicolas\Documents\EFREI\Cours\M1\Cours\Cryptocurrency Design and Risk\TD\Lab\data\hist_data_btceur_2020.csv');
 
 %% a) Stock Market Indices ploting
 
@@ -289,27 +289,27 @@ qqplot(FTSE_monthly_log_return);
 %% d) Calculate the test statistic
 
 [T,p] = jbtest(DJI_monthly_log_return, 0.05);
-[H, pValue, W] = swtest(DJI_monthly_log_return);
-h = kstest(DJI_monthly_log_return);
+[H,p] = swtest(DJI_monthly_log_return);
+[h,p] = kstest(DJI_monthly_log_return);
 
 [T,p] = jbtest(DAX_monthly_log_return, 0.05);
-[H, pValue, W] = swtest(DAX_monthly_log_return);
-h = kstest(DAX_monthly_log_return);
+[H,p] = swtest(DAX_monthly_log_return);
+[h,p] = kstest(DAX_monthly_log_return);
 
 [T,p] = jbtest(Nikkei_monthly_log_return, 0.05);
-[H, pValue, W] = swtest(Nikkei_monthly_log_return);
-h = kstest(Nikkei_monthly_log_return);
+[H,p] = swtest(Nikkei_monthly_log_return);
+[h,p] = kstest(Nikkei_monthly_log_return);
 
 [T,p] = jbtest(HSX_monthly_log_return, 0.05)
-[H, pValue, W] = swtest(HSX_monthly_log_return);
-h = kstest(HSX_monthly_log_return);
+[H,p] = swtest(HSX_monthly_log_return);
+[h,p] = kstest(HSX_monthly_log_return);
 
 [T,p] = jbtest(SP500_monthly_simple_return, 0.05);
-[H, pValue, W] = swtest(SP500_monthly_simple_return);
-h = kstest(SP500_monthly_simple_return);
+[H,p] = swtest(SP500_monthly_simple_return);
+[h,p] = kstest(SP500_monthly_simple_return);
 
 [T,p] = jbtest(FTSE_monthly_log_return, 0.05);
-[H, pValue, W] = swtest(FTSE_monthly_log_return);
-h = kstest(FTSE_monthly_log_return);
+[H,p] = swtest(FTSE_monthly_log_return);
+[h,p] = kstest(FTSE_monthly_log_return);
 
 % The results of the different statistical tests show that the samples are normally distributed.
