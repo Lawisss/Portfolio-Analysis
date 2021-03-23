@@ -315,10 +315,10 @@ qqplot(FTSE_monthly_log_return);
 % The value of the tests is 1, i.e. they reject the null hypothesis H0 (Gaussian distribution) and that the samples are not normally distributed.
 
 %% 5. Calculate VaR
-%% a) Historical Simulation Method
+%% a) 
 
-Returns = daily_simple_return_DJI;
-DateReturns = DJI.Date;
+Returns = daily_simple_return_DAX;
+DateReturns = DAX.Date;
 TestWindowEnd = length(Returns);
 
 TestWindowStart = find(year(DateReturns)==2007,1);
@@ -339,99 +339,8 @@ for t = TestWindow
 end
 
 figure;
-plot(DateReturns(TestWindow),[Historical95 Historical99]);
-ylabel('VaR');
-xlabel('Date');
-legend({'95% Confidence Level','99% Confidence Level'},'Location','Best');
-title('VaR Estimation Using the Historical Simulation Method');
-
-%% b) Normal Distribution Method
-
-Zscore = norminv(pVaR);
-Normal95 = zeros(length(TestWindow),1);
-Normal99 = zeros(length(TestWindow),1);
-
-for t = TestWindow
-i = t - TestWindowStart + 1;
-EstimationWindow = t:EstimationWindowSize;
-Sigma = std(Returns(EstimationWindow));
-Normal95(i) = -Zscore(1)*Sigma;
-Normal99(i) = -Zscore(2)*Sigma;
-end
-
-figure;
-plot(DateReturns(TestWindow),[Normal95 Normal99])
-xlabel('Date')
+plot(DateReturns(TestWindow),[Historical95 Historical99])
 ylabel('VaR')
+xlabel('Date')
 legend({'95% Confidence Level','99% Confidence Level'},'Location','Best')
-title('VaR Estimation Using the Normal Distribution Method')
-
-%% c) Exponential Weighted Moving Average Method (EWMA)
-
-Lambda = 0.94;
-Sigma2 = zeros(length(Returns),1);
-Sigma2(1) = Returns(1)^2;
-
-for i = 2 : (TestWindowStart-1)
-    Sigma2(i) = (1-Lambda) * Returns(i-1)^2 + Lambda * Sigma2(i-1);
-end
-
-Zscore = norminv(pVaR);
-EWMA95 = zeros(length(TestWindow),1);
-EWMA99 = zeros(length(TestWindow),1);
-
-for t = TestWindow
-    k  = t - TestWindowStart + 1;
-    Sigma2(t) = (1-Lambda) * Returns(t)^2 + Lambda * Sigma2(t);
-    Sigma = sqrt(Sigma2(t));
-    EWMA95(k) = -Zscore(1)*Sigma;
-    EWMA99(k) = -Zscore(2)*Sigma;
-end
-
-figure;
-plot(DateReturns(TestWindow),[EWMA95 EWMA99]);
-ylabel('VaR');
-xlabel('Date');
-legend({'95% Confidence Level','99% Confidence Level'},'Location','Best');
-title('VaR Estimation Using the EWMA Method');
-
-%% d) VaR Backtesting
-
-ReturnsTest = Returns(TestWindow);
-DatesTest = DateReturns(TestWindow);
-figure;
-plot(DatesTest,[ReturnsTest -Normal95 -Historical95 -EWMA95]);
-ylabel('VaR');
-xlabel('Date');
-legend({'Returns','Normal','Historical','EWMA'},'Location','Best');
-title('Comparison of returns and VaR at 95% for different models');
-
-%% e) VaR violation
-
-ZoomInd   = (DatesTest >= datetime(2010,01,31)) & (DatesTest <= datetime(2010,03,31));
-VaRData   = [-Normal95(ZoomInd) -Historical95(ZoomInd) -EWMA95(ZoomInd)];
-VaRFormat = {'-','--','-.'};
-D = DatesTest(ZoomInd);
-R = ReturnsTest(ZoomInd);
-N = Normal95(ZoomInd);
-H = Historical95(ZoomInd);
-E = EWMA95(ZoomInd);
-IndN95    = (R < -N);
-IndHS95   = (R < -H);
-IndEWMA95 = (R < -E);
-figure;
-bar(D,R,0.5,'FaceColor',[0.7 0.7 0.7]);
-hold on
-for i = 1 : size(VaRData,2)
-    stairs(D-0.5,VaRData(:,i),VaRFormat{i});
-end
-ylabel('VaR');
-xlabel('Date');
-legend({'Returns','Normal','Historical','EWMA'},'Location','Best','AutoUpdate','Off');
-title('95% VaR violations for different models');
-ax = gca;
-ax.ColorOrderIndex = 1;
-
-plot(D(IndN95),-N(IndN95),'o',D(IndHS95),-H(IndHS95),'o', D(IndEWMA95),-E(IndEWMA95),'o','MarkerSize',8,'LineWidth',1.5);
-xlim([D(1)-1, D(end)+1]);
-hold off;
+title('VaR Estimation Using the Historical Simulation Method')
