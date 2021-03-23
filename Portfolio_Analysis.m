@@ -318,10 +318,10 @@ qqplot(FTSE_monthly_log_return);
 %% a) Historical Simulation Method
 
 Returns = daily_simple_return_DJI;
-DateReturns = DJI.Date;
+Date = DJI.Date;
 TestWindowEnd = length(Returns);
 
-TestWindowStart = find(year(DateReturns)==2007,1);
+TestWindowStart = find(year(Date)==2007,1);
 TestWindow = TestWindowStart : TestWindowEnd;
 EstimationWindowSize = TestWindowEnd;
 
@@ -360,11 +360,11 @@ Normal99(i) = -Zscore(2)*Sigma;
 end
 
 figure;
-plot(DateReturns(TestWindow),[Normal95 Normal99])
-xlabel('Date')
-ylabel('VaR')
-legend({'95% Confidence Level','99% Confidence Level'},'Location','Best')
-title('VaR Estimation Using the Normal Distribution Method')
+plot(Date(TestWindow),[Normal95 Normal99]);
+xlabel('Date');
+ylabel('VaR');
+legend({'95% Confidence Level','99% Confidence Level'},'Location','Best');
+title('VaR Estimation Using the Normal Distribution Method');
 
 %% c) Exponential Weighted Moving Average Method (EWMA)
 
@@ -389,7 +389,7 @@ for t = TestWindow
 end
 
 figure;
-plot(DateReturns(TestWindow),[EWMA95 EWMA99]);
+plot(Date(TestWindow),[EWMA95 EWMA99]);
 ylabel('VaR');
 xlabel('Date');
 legend({'95% Confidence Level','99% Confidence Level'},'Location','Best');
@@ -398,7 +398,7 @@ title('VaR Estimation Using the EWMA Method');
 %% d) VaR Backtesting
 
 ReturnsTest = Returns(TestWindow);
-DatesTest = DateReturns(TestWindow);
+DatesTest = Date(TestWindow);
 figure;
 plot(DatesTest,[ReturnsTest -Normal95 -Historical95 -EWMA95]);
 ylabel('VaR');
